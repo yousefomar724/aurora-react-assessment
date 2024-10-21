@@ -41,7 +41,7 @@ export default function CryptoConverter({
     setAmount(e.target.value);
 
   return (
-    <Card>
+    <Card className="transition-all duration-300 ease-in-out hover:shadow-lg">
       <CardHeader>
         <CardTitle>Crypto Converter</CardTitle>
       </CardHeader>
@@ -55,12 +55,16 @@ export default function CryptoConverter({
               value={amount}
               onChange={handleAmountChange}
               placeholder="Enter amount"
+              className="transition-all duration-300 ease-in-out focus:ring-2 focus:ring-primary"
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="fromCrypto">From</Label>
             <Select value={fromCrypto} onValueChange={setFromCrypto}>
-              <SelectTrigger id="fromCrypto">
+              <SelectTrigger
+                id="fromCrypto"
+                className="transition-all duration-300 ease-in-out hover:border-primary"
+              >
                 <SelectValue placeholder="Select cryptocurrency" />
               </SelectTrigger>
               <SelectContent>
@@ -75,7 +79,10 @@ export default function CryptoConverter({
           <div className="space-y-2">
             <Label htmlFor="toCrypto">To</Label>
             <Select value={toCrypto} onValueChange={setToCrypto}>
-              <SelectTrigger id="toCrypto">
+              <SelectTrigger
+                id="toCrypto"
+                className="transition-all duration-300 ease-in-out hover:border-primary"
+              >
                 <SelectValue placeholder="Select cryptocurrency" />
               </SelectTrigger>
               <SelectContent>

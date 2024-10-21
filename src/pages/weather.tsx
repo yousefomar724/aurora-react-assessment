@@ -125,6 +125,15 @@ export default function Weather() {
           Famous Capital Cities Weather
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {isLoading && (
+            <Loader title="Loading famous capital cities weather..." />
+          )}
+          {error && ( 
+            <Error
+              title="Error loading famous capital cities weather"
+              message={error instanceof Error ? error.message : String(error)}
+            />
+          )}
           {famousCapitalsWeather.map((cityWeather, index) => (
             <WeatherCard
               key={FAMOUS_CAPITALS[index]}

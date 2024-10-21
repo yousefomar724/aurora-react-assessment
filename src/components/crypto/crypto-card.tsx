@@ -11,7 +11,7 @@ export default function CryptoCard({ crypto, currency }: CryptoCardProps) {
   const { price, percent_change_24h } = crypto.quote[currency];
 
   return (
-    <Card>
+    <Card className="transition-all duration-300 ease-in-out hover:shadow-lg hover:scale-105">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           {crypto.name}

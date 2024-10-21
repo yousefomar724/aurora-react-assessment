@@ -22,8 +22,7 @@ export default function Crypto() {
     return <Error title="Error loading crypto data" message={error.message} />;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Cryptocurrency Dashboard</h1>
+    <div className="container max-w-6xl mx-auto p-4">
       <div className="mb-4">
         <Select
           value={currency}
@@ -44,7 +43,7 @@ export default function Crypto() {
           <CryptoCard key={crypto.id} crypto={crypto} currency={currency} />
         ))}
       </div>
-      <div className="mt-8">
+      <div className="mt-12">
         <h2 className="text-xl font-semibold mb-2">Crypto Converter</h2>
         <CryptoConverter
           cryptoList={data?.slice(0, 10) || []}
