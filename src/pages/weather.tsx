@@ -25,7 +25,11 @@ export default function Weather() {
         <div className="mt-4">
           <WeatherCard
             weatherData={weatherData}
-            onDetailsClick={() => navigate(`/weather/${selectedCity}`)}
+            onDetailsClick={() =>
+              navigate(
+                `/weather/${selectedCity}?lat=${weatherData.coord.lat}&lon=${weatherData.coord.lon}`
+              )
+            }
           />
         </div>
       )}
