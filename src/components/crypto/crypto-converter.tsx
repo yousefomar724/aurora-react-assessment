@@ -27,21 +27,32 @@ export default function CryptoConverter({
     ? ((parseFloat(amount) * fromPrice) / toPrice).toFixed(8)
     : "";
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setAmount(e.target.value);
+  const handleFromCryptoChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setFromCrypto(e.target.value);
+  const handleToCryptoChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setToCrypto(e.target.value);
+
   return (
-    <div className="bg-white shadow-md rounded-lg p-4">
-      <h3 className="text-lg font-semibold mb-4">Crypto Converter</h3>
+    <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
+      <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
+        Crypto Converter
+      </h3>
       <div className="flex flex-col space-y-4">
         <input
           type="number"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={handleAmountChange}
           placeholder="Enter amount"
-          className="p-2 border rounded"
+          className="p-2 border rounded bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400"
+          aria-label="Enter amount to convert"
         />
         <select
           value={fromCrypto}
-          onChange={(e) => setFromCrypto(e.target.value)}
-          className="p-2 border rounded"
+          onChange={handleFromCryptoChange}
+          className="p-2 border rounded bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400"
+          aria-label="Select cryptocurrency to convert from"
         >
           {cryptoList.map((crypto) => (
             <option key={crypto.id} value={crypto.symbol}>
@@ -51,8 +62,9 @@ export default function CryptoConverter({
         </select>
         <select
           value={toCrypto}
-          onChange={(e) => setToCrypto(e.target.value)}
-          className="p-2 border rounded"
+          onChange={handleToCryptoChange}
+          className="p-2 border rounded bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400"
+          aria-label="Select cryptocurrency to convert to"
         >
           {cryptoList.map((crypto) => (
             <option key={crypto.id} value={crypto.symbol}>
@@ -60,7 +72,7 @@ export default function CryptoConverter({
             </option>
           ))}
         </select>
-        <p className="text-lg font-semibold">
+        <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
           {convertedAmount} {toCrypto}
         </p>
       </div>

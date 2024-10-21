@@ -1,0 +1,8 @@
+- Add Dark Mode
+- Add page transitions and smooth settle animations along with some card hover effects
+- Add Charts for crypto and covid
+- Enhance the pages heading and make them more appealing with the navigation bar
+- Test the application functionality, responsiveness and fix any bugs (if any)
+- Make sure the application is checking all the task requirements and bonus points in the task description
+- Deploy the application to the vercel
+- Implement a script to automate the deployment of the website when committing changes to the main branch.

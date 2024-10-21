@@ -5,8 +5,15 @@ import CryptoConverter from "../components/crypto/crypto-converter";
 import { SupportedCurrency } from "../types/crypto";
 import Loader from "@/components/shared/loader";
 import Error from "@/components/shared/error";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+  SelectTrigger,
+} from "@/components/ui/select";
 
-export default function CryptoPage() {
+export default function Crypto() {
   const [currency, setCurrency] = useState<SupportedCurrency>("USD");
   const { data, isLoading, error } = useCrypto(currency);
 
@@ -18,15 +25,20 @@ export default function CryptoPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Cryptocurrency Dashboard</h1>
       <div className="mb-4">
-        <select
+        <Select
           value={currency}
-          onChange={(e) => setCurrency(e.target.value as SupportedCurrency)}
-          className="p-2 border rounded"
+          onValueChange={(value) => setCurrency(value as SupportedCurrency)}
         >
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
-        </select>
+          <SelectTrigger className="w-44">
+            <SelectValue placeholder="Select a currency" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="USD">USD</SelectItem>
+            <SelectItem value="EUR">EUR</SelectItem>
+            <SelectItem value="EGP">EGP</SelectItem>
+            <SelectItem value="SAR">SAR</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {data?.slice(0, 10).map((crypto) => (
