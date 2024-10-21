@@ -8,10 +8,6 @@ export const useWeather = (city: string | null) => {
     enabled: !!city,
     staleTime: 10 * 60 * 1000, // 10 minutes
     retry: false,
-    throwOnError: (error) => {
-      console.error("Error fetching weather data:", error);
-      return true;
-    },
   });
 };
 
@@ -26,9 +22,5 @@ export const useWeatherDetails = (
     enabled: !!city && !!lat && !!lon,
     staleTime: 10 * 60 * 1000, // 10 minutes
     retry: false,
-    throwOnError: (error) => {
-      console.error("Error fetching weather details:", error);
-      return true;
-    },
   });
 };

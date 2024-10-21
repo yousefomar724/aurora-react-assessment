@@ -1,25 +1,24 @@
 import React, { useState, useCallback } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { X } from "lucide-react";
 
 interface WeatherSearchProps {
-  onSearch: (city: string) => void;
+  onSearch: (city: string, isNewSearch: boolean) => void;
+  recentSearches: string[];
+  onDelete: (city: string) => void;
 }
 
-export const WeatherSearch: React.FC<WeatherSearchProps> = ({ onSearch }) => {
+export const WeatherSearch: React.FC<WeatherSearchProps> = ({
+  onSearch,
+  recentSearches,
+  onDelete,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
   const handleSearch = useCallback(() => {
     if (searchTerm.trim()) {
-      onSearch(searchTerm.trim());
-      setRecentSearches((prev) => {
-        const updated = [
-          searchTerm,
-          ...prev.filter((s) => s !== searchTerm),
-        ].slice(0, 5);
-        return updated;
-      });
+      onSearch(searchTerm.trim(), true);
       setSearchTerm("");
     }
   }, [searchTerm, onSearch]);
@@ -48,14 +47,28 @@ export const WeatherSearch: React.FC<WeatherSearchProps> = ({ onSearch }) => {
           <h3 className="text-sm font-semibold mb-2">Recent Searches:</h3>
           <div className="flex flex-wrap gap-2">
             {recentSearches.map((city, index) => (
-              <Button
+              <div
                 key={index}
-                variant="outline"
-                size="sm"
-                onClick={() => onSearch(city)}
+                className="flex items-center bg-secondary rounded-md"
               >
-                {city}
-              </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onSearch(city, false)}
+                  className="px-2 py-1"
+                >
+                  {city}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onDelete(city)}
+                  className="px-1 py-1 text-destructive hover:text-destructive"
+                  aria-label={`Remove ${city} from recent searches`}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             ))}
           </div>
         </div>
