@@ -6,16 +6,10 @@ import Error from "../shared/error";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { CountryCovidStats } from "@/types/covid";
 
 interface CountrySelectProps {
   onSelect: (country: string) => void;
-}
-
-interface Country {
-  country: string;
-  countryInfo: {
-    flag: string;
-  };
 }
 
 export default function CountrySelect({ onSelect }: CountrySelectProps) {
@@ -25,7 +19,7 @@ export default function CountrySelect({ onSelect }: CountrySelectProps) {
     data: countries,
     isLoading,
     error,
-  } = useQuery<Country[]>({
+  } = useQuery<CountryCovidStats[]>({
     queryKey: ["countries"],
     queryFn: async () => {
       const response = await axios.get(
