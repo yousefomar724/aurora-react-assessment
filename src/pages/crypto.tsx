@@ -15,7 +15,7 @@ export default function CryptoPage() {
     return <Error title="Error loading crypto data" message={error.message} />;
 
   return (
-    <div className="p-4">
+    <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Cryptocurrency Dashboard</h1>
       <div className="mb-4">
         <select
