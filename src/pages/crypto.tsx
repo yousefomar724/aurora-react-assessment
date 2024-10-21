@@ -35,7 +35,6 @@ export default function Crypto() {
           <SelectContent>
             <SelectItem value="USD">USD</SelectItem>
             <SelectItem value="EUR">EUR</SelectItem>
-            <SelectItem value="EGP">EGP</SelectItem>
             <SelectItem value="SAR">SAR</SelectItem>
           </SelectContent>
         </Select>

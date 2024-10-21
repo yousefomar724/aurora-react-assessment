@@ -1,4 +1,6 @@
 import { CovidStats } from "../../types/covid";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface StatsCardProps {
   stats: CovidStats;
@@ -6,36 +8,26 @@ interface StatsCardProps {
 
 export default function StatsCard({ stats }: StatsCardProps) {
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
-      <h3 className="text-lg font-semibold mb-2 dark:text-white">
-        COVID-19 Statistics
-      </h3>
-      <div className="grid grid-cols-2 gap-4">
-        <StatItem
-          label="Cases"
-          value={stats.cases}
-          color="text-blue-600 dark:text-blue-400"
-        />
-        <StatItem
-          label="Deaths"
-          value={stats.deaths}
-          color="text-red-600 dark:text-red-400"
-        />
-        <StatItem
-          label="Recovered"
-          value={stats.recovered}
-          color="text-green-600 dark:text-green-400"
-        />
-        <StatItem
-          label="Active"
-          value={stats.active}
-          color="text-yellow-600 dark:text-yellow-400"
-        />
-      </div>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-        Last updated: {new Date(stats.updated).toLocaleString()}
-      </p>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>COVID-19 Statistics</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-4">
+          <StatItem label="Cases" value={stats.cases} color="bg-blue-500" />
+          <StatItem label="Deaths" value={stats.deaths} color="bg-red-500" />
+          <StatItem
+            label="Recovered"
+            value={stats.recovered}
+            color="bg-green-500"
+          />
+          <StatItem label="Active" value={stats.active} color="bg-yellow-500" />
+        </div>
+        <p className="text-sm text-muted-foreground mt-2">
+          Last updated: {new Date(stats.updated).toLocaleString()}
+        </p>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -48,8 +40,10 @@ interface StatItemProps {
 const StatItem = ({ label, value, color }: StatItemProps) => {
   return (
     <div>
-      <p className="text-sm text-gray-600 dark:text-gray-300">{label}</p>
-      <p className={`text-xl font-bold ${color}`}>{value.toLocaleString()}</p>
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <Badge variant="secondary" className={`text-xl font-bold ${color}`}>
+        {value.toLocaleString()}
+      </Badge>
     </div>
   );
 };

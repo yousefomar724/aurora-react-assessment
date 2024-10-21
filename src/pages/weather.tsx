@@ -6,12 +6,19 @@ import Loader from "@/components/shared/loader";
 import Error from "@/components/shared/error";
 import { useNavigate } from "react-router-dom";
 import { CloudSun, Search } from "lucide-react";
+import { WeatherData } from "@/types/weather";
+import { getWeather } from "@/lib/api/weatherApi";
+
+const FAMOUS_CAPITALS = ["London", "Paris", "Tokyo", "New York", "Sydney"];
 
 export default function Weather() {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const { data: weatherData, isLoading, error } = useWeather(selectedCity);
   const navigate = useNavigate();
+  const [famousCapitalsWeather, setFamousCapitalsWeather] = useState<
+    Array<WeatherData>
+  >([]);
 
   const loadRecentSearches = useCallback(() => {
     const storedSearches = localStorage.getItem("recentSearches");
@@ -55,8 +62,18 @@ export default function Weather() {
     });
   }, []);
 
+  useEffect(() => {
+    const fetchFamousCapitalsWeather = async () => {
+      const weatherPromises = FAMOUS_CAPITALS.map((city) => getWeather(city));
+      const weatherData = await Promise.all(weatherPromises);
+      setFamousCapitalsWeather(weatherData.filter(Boolean));
+    };
+
+    fetchFamousCapitalsWeather();
+  }, []);
+
   return (
-    <div className="container mx-auto p-4">
+    <div className="container max-w-6xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Weather Dashboard</h1>
       <WeatherSearch
         onSearch={handleSearch}
@@ -69,18 +86,22 @@ export default function Weather() {
           message={error instanceof Error ? error.message : String(error)}
         />
       )}
-      {weatherData && (
-        <div className="mt-4">
-          <WeatherCard
-            weatherData={weatherData}
-            onDetailsClick={() =>
-              navigate(
-                `/weather/${selectedCity}?lat=${weatherData.coord.lat}&lon=${weatherData.coord.lon}`
-              )
-            }
-          />
-        </div>
-      )}
+      {/* Weather data for the selected city */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {weatherData && (
+          <div className="mt-4">
+            <WeatherCard
+              weatherData={weatherData}
+              onDetailsClick={() =>
+                navigate(
+                  `/weather/${selectedCity}?lat=${weatherData.coord.lat}&lon=${weatherData.coord.lon}`
+                )
+              }
+            />
+          </div>
+        )}
+      </div>
+      {/* If no weather data and no selected city, show the welcome message */}
       {!weatherData && !selectedCity && (
         <div className="text-center py-8">
           <CloudSun className="h-16 w-16 mx-auto text-primary mb-4" />
@@ -97,6 +118,26 @@ export default function Weather() {
           </div>
         </div>
       )}
+
+      {/* New section for famous capital cities */}
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-4">
+          Famous Capital Cities Weather
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {famousCapitalsWeather.map((cityWeather, index) => (
+            <WeatherCard
+              key={FAMOUS_CAPITALS[index]}
+              weatherData={cityWeather}
+              onDetailsClick={() =>
+                navigate(
+                  `/weather/${FAMOUS_CAPITALS[index]}?lat=${cityWeather.coord.lat}&lon=${cityWeather.coord.lon}`
+                )
+              }
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

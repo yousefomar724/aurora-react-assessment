@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "../ui/tooltip";
+import { motion } from "framer-motion";
 
 interface WeatherCardProps {
   weatherData: WeatherData;
@@ -41,90 +42,102 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
   };
 
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          <div className="flex flex-col">
-            <span className="text-xl">{weatherData.name}</span>
-            <TooltipProvider delayDuration={0}>
+    <motion.div
+      initial={{ scale: 1 }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <span className="text-xl">{weatherData.name}</span>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <span className="text-sm text-muted-foreground flex items-center gap-1">
+                      <Globe className="w-4 h-4" />
+                      {weatherData.sys.country}
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    {getCountryName(weatherData.sys.country)}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  <span className="text-sm text-muted-foreground flex items-center gap-1">
-                    <Globe className="w-4 h-4" />
-                    {weatherData.sys.country}
-                  </span>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={toggleTemperature}
+                  >
+                    {isCelsius ? "°C" : "°F"}
+                  </Button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom">
-                  {getCountryName(weatherData.sys.country)}
+                <TooltipContent>
+                  {isCelsius ? "Switch to Fahrenheit" : "Switch to Celsius"}
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-4xl font-bold">
+              {formatTemperature(weatherData.main.temp)}
+            </div>
+            <div className="flex flex-col items-center">
+              <img
+                src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                alt={weatherData.weather[0].description}
+                className="w-16 h-16"
+              />
+              <span className="text-sm font-medium capitalize">
+                {weatherData.weather[0].main}
+              </span>
+            </div>
           </div>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="outline" size="sm" onClick={toggleTemperature}>
-                  {isCelsius ? "°C" : "°F"}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                {isCelsius ? "Switch to Fahrenheit" : "Switch to Celsius"}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center justify-between mb-4">
-          <div className="text-4xl font-bold">
-            {formatTemperature(weatherData.main.temp)}
+          <div className="space-y-2 text-sm">
+            <div className="flex flex-col gap-2 mb-4">
+              <p>Humidity: {weatherData.main.humidity}%</p>
+              <p>Wind Speed: {weatherData.wind.speed} m/s</p>
+              <p>
+                Feels Like: {formatTemperature(weatherData.main.feels_like)}
+              </p>
+            </div>
+            <div className="flex justify-between items-center">
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="flex items-center gap-1">
+                      <Sunrise className="w-4 h-4" />{" "}
+                      {formatTime(weatherData.sys.sunrise)}
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>Sunrise time</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="flex items-center gap-1">
+                      <Sunset className="w-4 h-4" />{" "}
+                      {formatTime(weatherData.sys.sunset)}
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>Sunset time</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </div>
-          <div className="flex flex-col items-center">
-            <img
-              src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
-              alt={weatherData.weather[0].description}
-              className="w-16 h-16"
-            />
-            <span className="text-sm font-medium capitalize">
-              {weatherData.weather[0].main}
-            </span>
-          </div>
-        </div>
-        <div className="space-y-2 text-sm">
-          <div className="flex flex-col gap-2 mb-4">
-            <p>Humidity: {weatherData.main.humidity}%</p>
-            <p>Wind Speed: {weatherData.wind.speed} m/s</p>
-            <p>Feels Like: {formatTemperature(weatherData.main.feels_like)}</p>
-          </div>
-          <div className="flex justify-between items-center">
-            <TooltipProvider delayDuration={0}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="flex items-center gap-1">
-                    <Sunrise className="w-4 h-4" />{" "}
-                    {formatTime(weatherData.sys.sunrise)}
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent>Sunrise time</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider delayDuration={0}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="flex items-center gap-1">
-                    <Sunset className="w-4 h-4" />{" "}
-                    {formatTime(weatherData.sys.sunset)}
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent>Sunset time</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </div>
-        <Button className="w-full mt-4" onClick={onDetailsClick}>
-          View Details
-        </Button>
-      </CardContent>
-    </Card>
+          <Button className="w-full mt-4" onClick={onDetailsClick}>
+            View Details
+          </Button>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };

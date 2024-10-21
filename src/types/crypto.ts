@@ -11,4 +11,4 @@ export interface CryptoData {
   };
 }
 
-export type SupportedCurrency = "USD" | "EUR" | "EGP" | "SAR";
+export type SupportedCurrency = "USD" | "EUR" | "SAR";

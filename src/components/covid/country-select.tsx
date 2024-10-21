@@ -3,6 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Loader from "../shared/loader";
 import Error from "../shared/error";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 
 interface CountrySelectProps {
   onSelect: (country: string) => void;
@@ -44,12 +47,11 @@ export default function CountrySelect({ onSelect }: CountrySelectProps) {
 
   return (
     <div className="mb-4">
-      <input
+      <Input
         type="text"
         placeholder="Search countries..."
         value={search}
         onChange={handleSearchChange}
-        className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
       />
       {isLoading && <Loader title="Loading countries..." />}
       {error && (
@@ -58,18 +60,13 @@ export default function CountrySelect({ onSelect }: CountrySelectProps) {
           message={(error as Error).message}
         />
       )}
-      <ul className="mt-2 max-h-60 overflow-y-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded">
+      <ScrollArea className="h-[200px] mt-2 rounded-md border">
         {filteredCountries?.map((country) => (
-          <li
+          <Button
             key={country.country}
+            variant="ghost"
+            className="w-full justify-start"
             onClick={handleCountrySelect(country.country)}
-            className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-900 dark:text-gray-100"
-            tabIndex={0}
-            role="button"
-            aria-label={`Select ${country.country}`}
-            onKeyDown={(e) =>
-              e.key === "Enter" && handleCountrySelect(country.country)()
-            }
           >
             <img
               src={country.countryInfo.flag}
@@ -77,9 +74,9 @@ export default function CountrySelect({ onSelect }: CountrySelectProps) {
               className="w-6 h-4 mr-2"
             />
             {country.country}
-          </li>
+          </Button>
         ))}
-      </ul>
+      </ScrollArea>
     </div>
   );
 }

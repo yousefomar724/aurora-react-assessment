@@ -7,6 +7,6 @@ export const useCrypto = (currency: SupportedCurrency) => {
     queryKey: ["crypto", currency],
     queryFn: () => getCryptoData(currency),
     staleTime: 30 * 1000, // 30 seconds
-    retry: 3,
+    retry: false,
   });
 };
